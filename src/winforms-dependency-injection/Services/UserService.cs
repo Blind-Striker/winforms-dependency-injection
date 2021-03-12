@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using winforms_dependency_injection.Models;
+﻿using FormApplication.Models;
 
-namespace winforms_dependency_injection.Services
+namespace FormApplication.Services
 {
     public class UserService : IUserService
     {

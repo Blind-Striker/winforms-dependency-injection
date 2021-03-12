@@ -1,28 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using winforms_dependency_injection.Presenters;
+using FormApplication.Contracts;
+using FormApplication.Models;
+using FormApplication.Presenters;
 
-namespace winforms_dependency_injection.Views
+namespace FormApplication.Views
 {
-    public interface IUserView
-    {
-        void JustDoIt(string message);
-    }
-
     public partial class UserView : Form, IUserView
     {
-        private UserPresenter _presenter;
-        public UserView()
+        private readonly IUserPresenter _userPresenter;
+        public UserView(IUserPresenter userPresenter)
         {
+            _userPresenter = userPresenter;
+
             InitializeComponent();
-            _presenter = new UserPresenter(this);
         }
 
         public void JustDoIt(string message)
@@ -30,10 +21,14 @@ namespace winforms_dependency_injection.Views
             label1.Text = message;
         }
 
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            var user = _presenter.GetUserModel();
-            MessageBox.Show(user.Name);
+            _userPresenter.OnButtonClicked();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-namespace winforms_dependency_injection.Views
+namespace FormApplication.Views
 {
     partial class UserView
     {

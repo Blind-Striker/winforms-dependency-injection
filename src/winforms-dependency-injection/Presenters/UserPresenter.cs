@@ -1,34 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using winforms_dependency_injection.Models;
-using winforms_dependency_injection.Services;
-using winforms_dependency_injection.Views;
+using FormApplication.Contracts;
+using FormApplication.Models;
+using FormApplication.Services;
 
-namespace winforms_dependency_injection.Presenters
+namespace FormApplication.Presenters
 {
-    public class UserPresenter
+    public class UserPresenter : IUserPresenter
     {
-        private readonly IUserView _view;
-        private IUserService userService;
-        public UserPresenter(IUserView view)
-        {
-            _view = view;
-            userService = Program.GetService<IUserService>(); // request service object from ServiceProvider
+        private readonly IUserService _userService;
 
-            JustDoIt(); // quick sample for calling method from presenter
+        public UserPresenter(Func<IUserPresenter, IUserView> viewFactory, IUserService userService)
+        {
+            _userService = userService;
+
+            View = viewFactory(this);
+            View.JustDoIt("Hello User!");
         }
 
-        public void JustDoIt()
-        {
-            _view.JustDoIt("Hello User!");
-        }
+        public IUserView View { get; }
 
-        public UserModel GetUserModel()
+        public void OnButtonClicked()
         {
-            return userService.GetUser(1); // calling method from ui
+            UserModel userModel = _userService.GetUser(1);
+            View.ShowMessage(userModel.Name);
         }
     }
 }
